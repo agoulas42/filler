@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 13:27:51 by agoulas           #+#    #+#             */
-/*   Updated: 2018/07/29 15:06:23 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/29 16:04:37 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int		ret_strlen(char *s)
 	int		pos_ret;
 
 	pos_ret = 0;
-	while (s[pos_ret])
+	while (s && s[pos_ret])
 	{
 		if (s[pos_ret] == '\n')
 			return (pos_ret);
@@ -36,7 +36,9 @@ static t_list	*init_get(t_list **lst, int fd)
 		if ((int)tmp->content_size == fd)
 			return (tmp);
 		tmp = tmp->next;
+		ft_lst_del_one(*lst, tmp->content, fd);
 	}
+	ft_lstadd_last(lst, ft_lstnew(NULL,-1));
 	return (tmp);
 }
 
@@ -73,9 +75,7 @@ static int		test_content(const int fd, char **tmp)
 	size = 0;
 	l_buf = NULL;
 	ft_bzero(buf, BUFF_SIZE);
-	if (*tmp == NULL)
-		*tmp = ft_strnew(1);
-	while (!(ft_strchr(buf, '\n')) && (n = read(fd, buf, BUFF_SIZE)) > 0)
+	while (ret_strlen(buf) == -1 && (n = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[n] = '\0';
 		ft_lstadd_last(&l_buf, ft_lstnew(buf, n));
@@ -85,7 +85,7 @@ static int		test_content(const int fd, char **tmp)
 		return (-1);
 	while (l_buf != NULL && l_buf->content != NULL)
 	{
-		*tmp = ft_strcat(*tmp, l_buf->content);
+		*tmp = ft_strjoin(*tmp, l_buf->content);
 		l_buf = ft_lst_del_one(l_buf, l_buf->content, l_buf->content_size);
 	}
 	return (n);
@@ -98,14 +98,14 @@ int				get_next_line(const int fd, char **line)
 	char			*str;
 	int				n;
 
-	if (fd < 0 || !line || BUFF_SIZE < 1)
+	if (fd < 0 || !line || read(fd, 0, 0) < 0 || BUFF_SIZE < 1)
 		return (-1);
 	n = 0;
 	tmp = init_get(&lst, fd);
 	if (tmp != NULL && tmp->content != NULL)
 		str = ft_strdup(tmp->content);
 	else
-		str = ft_strdup("");
+		str = ft_strnew(1);
 	if (ret_strlen(str) == -1)
 	{
 		n = test_content(fd, &str);
@@ -114,7 +114,6 @@ int				get_next_line(const int fd, char **line)
 	}
 	if ((n = get_str(fd, line, str, &lst)) != 1)
 		return (n);
-	if (str != NULL)
-		free(str);
+	free(str);
 	return (1);
 }
