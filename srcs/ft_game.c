@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_last.c                                   :+:      :+:    :+:   */
+/*   ft_game.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/21 13:24:14 by agoulas           #+#    #+#             */
-/*   Updated: 2018/08/16 15:47:10 by agoulas          ###   ########.fr       */
+/*   Created: 2018/08/07 09:53:16 by agoulas           #+#    #+#             */
+/*   Updated: 2018/11/06 11:31:03 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
-#include <stdlib.h>
+#include "../includes/ft_filler.h"
 
-void	ft_lstadd_last(t_list **alst, t_list *n)
+int		init_game(t_game **p)
 {
-	t_list *cur;
-
-	if (alst && n)
-	{
-		if (*alst == NULL || (*alst)->content == NULL)
-		{
-			(*alst) = n;
-			(*alst)->next = NULL;
-		}
-		else
-		{
-			cur = *alst;
-			while (cur->next != NULL)
-				cur = cur->next;
-			cur->next = n;
-		}
-	}
+	if ((*p = (t_game*)malloc(sizeof(t_game))) == NULL)
+		return (0);
+	(*p)->one = NULL;
+	(*p)->two = NULL;
+	(*p)->fd = 0;
+	(*p)->x_final = -1;
+	(*p)->y_final = -1;
+	(*p)->mineh = -1;
+	(*p)->minew = -1;
+	(*p)->maxeh = -1;
+	(*p)->maxew = -1;
+	(*p)->test = open("test.txt",O_CREAT | O_TRUNC | O_RDWR);
+	return (1);
 }

@@ -6,7 +6,7 @@
 #    By: agoulas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/18 17:44:35 by agoulas           #+#    #+#              #
-#    Updated: 2018/07/24 16:12:24 by agoulas          ###   ########.fr        #
+#    Updated: 2018/11/05 16:20:29 by agoulas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 .PHONY: all re fclean clean debug norme
@@ -33,7 +33,7 @@ DIR_O = build
 
 SRCS=$(addprefix $(DIR_S)/, $(SRC))
 OBJS=$(addprefix $(DIR_O)/, $(SRC:.c=.o))
-# ============================================================================ #
+	# ============================================================================ #
 
 DIR_LS = libft/src
 DIR_OL = libft/build
@@ -43,7 +43,9 @@ OBJS_LIB=$(addprefix $(DIR_OL)/, $(SRC_L:.c=.o))
 
 # ============================================================================ #
 
-SRC = main.c
+SRC = main.c ft_player.c ft_game.c ft_parsing_tool.c ft_ring.c ft_piece.c\
+	  ft_handle_piece.c ft_point.c ft_piece2.c\
+
 
 SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_memccpy.c ft_memcmp.c ft_memdel.c ft_memset.c \
@@ -64,16 +66,43 @@ SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_itoa_base.c ft_putwchar.c ft_strtolower.c ft_strtoupper.c\
 		ft_strcpy_from_to.c ft_wclen.c ft_wcslen.c ft_wctomb.c ft_wcscmp.c\
 		ft_strtolower_rea.c ft_strtoupper_rea.c ft_lst_del.c ft_lst_printf.c\
-		ft_get_next_line.c\
+		get_next_line.c\ ft_printf.c\
+		ft_itoa_base_printf.c\
+		ft_flags.c\
+		ft_format.c\
+		ft_parsing_f.c\
+		ft_conv.c\
+		ft_conv_aux.c\
+		ft_mod.c\
+		ft_flags_option.c\
+		ft_union_di.c\
+		ft_handle_di.c\
+		ft_test_value_mod.c\
+		ft_handle_c.c\
+		ft_handle_lc.c\
+		ft_union_uoxx.c\
+		ft_return_sign_uoxx.c\
+		ft_handle_uoxx.c\
+		ft_handle_u.c\
+		ft_handle_o.c\
+		ft_handle_x.c\
+		ft_handle_pourc.c\
+		ft_handle_none.c\
+		ft_unicode.c\
+		ft_handle_p.c\
+		ft_handle_s.c\
+		ft_s_aux.c\
+		ft_strwchar.c\
+		ft_buffer.c\
 
 # ============================================================================ #
 
 all :$(NAME)
 
-$(NAME) : $(DIR_O) $(OBJS) $(INC)
+$(NAME) : $(DIR_O) $(OBJS) $(INC) $(DIR_INC)
 	@make -C libft
 	@$(CC) $(DFLAGS) -o $@ $(OBJS) $(LIBFLAGS)
-	@cp $(NAME) ./resources/
+	@cp $(NAME) ./resources/players
 	@echo "[$(PURPLE)Make $(NAME) done$(RESET)]"
 
 # ============================================================================ #
@@ -83,7 +112,6 @@ $(DIR_O):
 
 $(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c $(INC)
 	@$(CC) $(DFLAGS) -c $< -o $@ $(CPPFLAGS)
-
 $(OBJS_LIB): $(DIR_OL)/%.o: $(DIR_LS)/%.c $(DIR_INC)
 	@$(CC) $(DFLAGS) -c $< -o $@ $(CPPFLAGS)
 
@@ -91,17 +119,11 @@ $(OBJS_LIB): $(DIR_OL)/%.o: $(DIR_LS)/%.c $(DIR_INC)
 
 clean:
 	@/bin/rm -f $(OBJS)
-	@make -C libft clean
 
 fclean : clean
 	@/bin/rm -f $(NAME)
-	@/bin/rm -Rf build/
+	@/bin/rm -Rf $(DIR_O)
 	@make -C libft fclean
 
 re : fclean all
-
-norme :
-	make -C libft norme
-	@norminette $(SRCS) $(HEADER)
-
 # ============================================================================ #

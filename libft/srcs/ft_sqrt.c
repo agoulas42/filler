@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_last.c                                   :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/21 13:24:14 by agoulas           #+#    #+#             */
-/*   Updated: 2018/08/16 15:47:10 by agoulas          ###   ########.fr       */
+/*   Created: 2018/11/05 16:46:45 by agoulas           #+#    #+#             */
+/*   Updated: 2018/11/05 17:02:46 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../includes/libft.h"
-#include <stdlib.h>
+#include <unistd.h>
 
-void	ft_lstadd_last(t_list **alst, t_list *n)
+int ft_sqrt(int nb)
 {
-	t_list *cur;
+	 int i;
+	  int sq;
 
-	if (alst && n)
+	i = 1;
+	sq = 1;
+	if (nb == 0)
+		return(0);
+	while (i * i < nb)
 	{
-		if (*alst == NULL || (*alst)->content == NULL)
-		{
-			(*alst) = n;
-			(*alst)->next = NULL;
-		}
-		else
-		{
-			cur = *alst;
-			while (cur->next != NULL)
-				cur = cur->next;
-			cur->next = n;
-		}
+		i++;
 	}
+	if ((nb % i) == 0)
+		return (i);
+	else
+		return(0);
 }

@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 11:33:26 by agoulas           #+#    #+#             */
-/*   Updated: 2018/07/18 18:30:39 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/08/20 12:37:13 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stddef.h>
 # include "libft.h"
 # include <wchar.h>
-# define SIZE_MAX_BUF 409
+# define SIZE_MAX_BUF 4096
 
 typedef struct				s_format
 {

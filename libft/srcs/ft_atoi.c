@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 16:04:36 by agoulas           #+#    #+#             */
-/*   Updated: 2018/01/12 16:57:59 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/08/20 12:36:35 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		ft_atoi(const char *str)
 {
-	unsigned int			neg;
-	unsigned int			i;
-	unsigned long long		n;
+	int				neg;
+	int				i;
+	long long int	n;
 
 	neg = 1;
 	i = 0;

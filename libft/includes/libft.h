@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 19:03:59 by agoulas           #+#    #+#             */
-/*   Updated: 2018/07/18 13:21:33 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/11/05 17:03:07 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,5 @@ int					ft_wclen(wchar_t wc);
 size_t				ft_wcslen(wchar_t *wcs);
 int					ft_wctomb(char *tmp, wchar_t org);
 int					ft_wcscmp(const wchar_t *s1, const wchar_t *s2);
+int					ft_sqrt(int nb);
 #endif

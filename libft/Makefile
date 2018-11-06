@@ -6,7 +6,7 @@
 #    By: agoulas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 15:28:36 by agoulas           #+#    #+#              #
-#    Updated: 2018/07/19 15:36:19 by agoulas          ###   ########.fr        #
+#    Updated: 2018/11/05 17:04:08 by agoulas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,9 @@
 NAME = libft.a
 
 # ============================================================================ #
-
-CFLAGS = -Wall -Werror -Wextra
-DFLAGS = -pedantic -ansi -g -ggdb
+CC = gcc
+CFLAGS = -Wextra -Wall -Werror
+DFLAGS = -Wextra -Wall -Werror-pedantic -ansi -g -ggdb
 
 # ============================================================================ #
 
@@ -25,16 +25,15 @@ HDR = includes
 
 # ============================================================================ #
 
-SRC = srcs
-OBJ = object
-
-SRCS=$(addprefix srcs/, $(SOURCES))
-OBJS=$(addprefix build/, $(SOURCES:.c=.o))
+DIR_S = srcs
+DIR_O = build
+SRCS=$(addprefix $(DIR_S)/, $(SRC))
+OBJS=$(addprefix $(DIR_O)/, $(SRC:.c=.o))
 
 # ============================================================================ #
 
-SOURCES = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
-		  ft_memccpy.c ft_memcmp.c ft_memdel.c ft_memset.c \
+SRC = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c\
+		  ft_memccpy.c ft_memcmp.c ft_memdel.c ft_memset.c\
 		  ft_putnbr.c ft_strcat.c ft_strclr.c ft_strcpy.c ft_strdup.c\
 		  ft_striter.c ft_strjoin.c ft_strlen.c ft_strmapi.c\
 		  ft_strncmp.c ft_strnequ.c ft_strrchr.c ft_strstr.c\
@@ -52,7 +51,8 @@ SOURCES = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		  ft_itoa_base.c ft_putwchar.c ft_strtolower.c ft_strtoupper.c\
 		  ft_strcpy_from_to.c ft_wclen.c ft_wcslen.c ft_wctomb.c ft_wcscmp.c\
 		  ft_strtolower_rea.c ft_strtoupper_rea.c ft_lst_del.c ft_lst_printf.c\
-		  ft_get_next_line.c\
+		  ft_sqrt.c \
+		  get_next_line.c\
 		  ft_printf.c\
 		  ft_itoa_base_printf.c\
 		  ft_flags.c\
@@ -81,23 +81,24 @@ SOURCES = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		  ft_s_aux.c\
 		  ft_strwchar.c\
 		  ft_buffer.c\
-		  # ============================================================================ #
+
+
+# ============================================================================ #
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(HDR)
+$(NAME): $(DIR_O) $(OBJS) $(HDR)
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
 	@echo "[$(PURPLE)Make $(NAME) done$(RESET)]"
 
-# ============================================================================ #
 
-build:
+$(DIR_O):
 	@mkdir build/
 
-build/%.o: srcs/%.c | build $(HDR)
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c $(HDR)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(CPPFLAGS)
 
 # ============================================================================ #
 #
@@ -107,7 +108,8 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@rm -Rf build/
+	@rm -Rf $(OBJS)
+	@rm -Rf $(OBJ)
 	@echo "libft fclean"
 
 re: fclean all
