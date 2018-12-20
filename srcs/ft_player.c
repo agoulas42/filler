@@ -6,29 +6,29 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/07 09:47:34 by agoulas           #+#    #+#             */
-/*   Updated: 2018/11/06 12:43:09 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/19 18:27:56 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_filler.h"
 
-int			ft_getplayer(t_game **p, char **line)
+int			ft_getplayer(t_filler **p, char **line)
 {
-	if (ft_strncmp(*line, "$$$ exec p", 9) != 0)
+	int i;
+
+	i = 1;
+	while (ft_strncmp(*line, "$$$ exec p", 9) != 0 && i >= 0)
 	{
-		while (get_next_line((*p)->fd, line) > -1)
-		{
-			if (ft_strncmp(*line, "$$$ exec p", 9) == 0)
-				break;
-		}
+		ft_strdel(line);
+		i = get_next_line((*p)->fd, line);
 	}
 	if ((*line)[10] == '1' || (*line)[10] == '2')
 	{
-		write((*p)->test, *line, ft_strlen(*line));
-		write((*p)->test,"\n", 1);
-		(*p)->myplayer = ((*line)[10] == '1' ? "Oo" : "Xx");
-		(*p)->enemy = ((*line)[10] == '1' ? "Xx" : "Oo");
+		(*p)->myplayer = ((*line)[10] == '1' ? 'O' : 'X');
+		(*p)->enemy = ((*line)[10] == '1' ? 'X' : 'O');
+		ft_strdel(line);
 		return (1);
 	}
+	ft_strdel(line);
 	return (0);
 }

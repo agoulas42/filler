@@ -6,7 +6,7 @@
 #    By: agoulas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/18 17:44:35 by agoulas           #+#    #+#              #
-#    Updated: 2018/11/05 16:20:29 by agoulas          ###   ########.fr        #
+#    Updated: 2018/12/17 14:17:38 by agoulas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 .PHONY: all re fclean clean debug norme
@@ -17,7 +17,7 @@ NAME = agoulas.filler
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-DFLAGS = -Wall -Werror -Wextra  -pedantic -g -ggdb
+DFLAGS = -Wall -Werror -Wextra  -pedantic -g -ggdb -ansi -w
 
 # ============================================================================ #
 
@@ -35,17 +35,20 @@ SRCS=$(addprefix $(DIR_S)/, $(SRC))
 OBJS=$(addprefix $(DIR_O)/, $(SRC:.c=.o))
 	# ============================================================================ #
 
-DIR_LS = libft/src
+DIR_LS = libft/srcs
+DIR_LSP = libft/srcs_p
 DIR_OL = libft/build
 
 SRCS_L=$(addprefix $(DIR_LS)/, $(SRC_l))
+SRCS_LP=$(addprefix $(DIR_LSP)/, $(SRC_LP))
 OBJS_LIB=$(addprefix $(DIR_OL)/, $(SRC_L:.c=.o))
+OBJS_LIB=$(addprefix $(DIR_OL)/, $(SRC_LP:.c=.o))
 
 # ============================================================================ #
 
-SRC = main.c ft_player.c ft_game.c ft_parsing_tool.c ft_ring.c ft_piece.c\
-	  ft_handle_piece.c ft_point.c ft_piece2.c\
-
+SRC = ft_algo.c ft_figure.c ft_figure2.c ft_filler.c\
+	ft_handle_fig.c ft_map.c ft_parsing_tool.c ft_player.c\
+	ft_point.c ft_pos_player.c main.c\
 
 SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_memccpy.c ft_memcmp.c ft_memdel.c ft_memset.c \
@@ -66,10 +69,9 @@ SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_itoa_base.c ft_putwchar.c ft_strtolower.c ft_strtoupper.c\
 		ft_strcpy_from_to.c ft_wclen.c ft_wcslen.c ft_wctomb.c ft_wcscmp.c\
 		ft_strtolower_rea.c ft_strtoupper_rea.c ft_lst_del.c ft_lst_printf.c\
-		get_next_line.c\ ft_printf.c\
-		ft_itoa_base_printf.c\
-		ft_flags.c\
-		ft_format.c\
+		get_next_line.c\ 
+
+SRCS_LP = ft_printf.c ft_itoa_base_printf.c ft_flags.c ft_format.c \
 		ft_parsing_f.c\
 		ft_conv.c\
 		ft_conv_aux.c\
@@ -99,7 +101,7 @@ SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 
 all :$(NAME)
 
-$(NAME) : $(DIR_O) $(OBJS) $(INC) $(DIR_INC)
+$(NAME) : $(DIR_O) $(OBJS) $(OBJS_LIB) $(INC) $(DIR_INC)
 	@make -C libft
 	@$(CC) $(DFLAGS) -o $@ $(OBJS) $(LIBFLAGS)
 	@cp $(NAME) ./resources/players
@@ -112,17 +114,17 @@ $(DIR_O):
 
 $(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c $(INC)
 	@$(CC) $(DFLAGS) -c $< -o $@ $(CPPFLAGS)
-$(OBJS_LIB): $(DIR_OL)/%.o: $(DIR_LS)/%.c $(DIR_INC)
+
+$(OBJS_LIB): $(DIR_OL)/%.o: $(DIR_LS)/%.c $(DIR_LSP)/%.c $(DIR_INC)
 	@$(CC) $(DFLAGS) -c $< -o $@ $(CPPFLAGS)
 
 # ============================================================================ #
 
 clean:
-	@/bin/rm -f $(OBJS)
+	@/bin/rm -Rf $(DIR_O)
 
 fclean : clean
 	@/bin/rm -f $(NAME)
-	@/bin/rm -Rf $(DIR_O)
 	@make -C libft fclean
 
 re : fclean all

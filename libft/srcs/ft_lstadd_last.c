@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 13:24:14 by agoulas           #+#    #+#             */
-/*   Updated: 2018/08/16 15:47:10 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/17 19:48:12 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@ void	ft_lstadd_last(t_list **alst, t_list *n)
 
 	if (alst && n)
 	{
-		if (*alst == NULL || (*alst)->content == NULL)
+		if (*alst == NULL )
 		{
 			(*alst) = n;
+			(*alst)->next = NULL;
+		}
+		else if ((*alst)->content == NULL)
+		{
+			free(*alst);
+			*alst = n;
 			(*alst)->next = NULL;
 		}
 		else

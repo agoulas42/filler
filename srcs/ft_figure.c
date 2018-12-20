@@ -1,89 +1,81 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_piece.c                                         :+:      :+:    :+:   */
+/*   ft_figure.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/08 11:28:59 by agoulas           #+#    #+#             */
-/*   Updated: 2018/11/06 10:50:24 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/19 17:31:49 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_filler.h"
 
-int		init_piece(t_game **p, int x, int y)
+int		init_fig(t_filler **p, int x, int y)
 {
 	int i;
 
 	i = 0;
+	if ((*p)->fig != NULL)
+		free_fig(p);
 	if (x <= 0 || y <= 0 || *p == NULL)
 		return (0);
-	if (((*p)->elem = (char **)malloc(sizeof(char*) * (x + 1)))== NULL)
+	if (((*p)->fig = (char **)malloc(sizeof(char*) * (x + 1))) == NULL)
 		return (0);
 	while (i < x)
 	{
-		if (((*p)->elem[i] = (char*)ft_memalloc(y + 1))== NULL)
+		if (((*p)->fig[i] = (char*)ft_memalloc(y + 1)) == NULL)
 			return (0);
 		i++;
 	}
-	(*p)->elem[i] = NULL;
-	(*p)->elem_heigth = x;
-	(*p)->elem_width = y;
+	(*p)->fig[i] = NULL;
+	(*p)->fig_heigth = x;
+	(*p)->fig_width = y;
 	return (1);
 }
 
-
-
-int		ft_free_piece(char **p, int length)
+int		gnl_fig(t_filler **p, char **line)
 {
-	int i;
-
-	i = length;
-	while (i >= 0)
-	{
-		free(p[i]);
-		i--;
-	}
-	return (1);
-}
-
-int		gnl_piece(t_game **p, char **line)
-{
-	int		i;
 	int		u;
 	int		x;
 	int		res;
 
 	u = 0;
-	x = (*p)->elem_heigth;
-	write((*p)->test,"start piece\n", 12);
+	x = (*p)->fig_heigth;
 	while (u < x)
 	{
 		if ((res = get_next_line((*p)->fd, line)) < 0)
 			return (0);
-		i = 0;
-		while ((*line)[i] && i < (*p)->elem_width)
-		{
-			(*p)->elem[u][i] = (*line)[i];
-			i++;
-		}
-		(*line)[i] = '\0';
+		(*p)->fig[u] = *line;
 		u++;
 	}
-	(*p)->elem[u] = NULL;
-	ft_test_formpiece(p);
+	(*p)->fig[u] = NULL;
+	ft_test_formfig(p);
 	return (1);
 }
 
-int		get_piece(t_game **p, char **line)
+int		get_fig(t_filler **p, char **line)
 {
-	char **tab;
+	char	**tab;
+	int		i;
 
+	free_fig(p);
+	tab = NULL;
 	if ((tab = ft_strsplit(*line, ' ')) == NULL)
 		return (0);
-	if (init_piece(p, ft_atoi(tab[1]), ft_atoi(tab[2])) == 0
-			|| gnl_piece(p, line) == 0)
+	ft_strdel(line);
+	if (init_fig(p, ft_atoi(tab[1]), ft_atoi(tab[2])) == 0
+			|| gnl_fig(p, line) == 0)
 		return (0);
+	i = 0;
+	while (tab[i] != NULL)
+	{
+		free(tab[i]);
+		tab[i] = NULL;
+		i++;
+	}
+	free(tab);
+	tab = NULL;
 	return (1);
 }

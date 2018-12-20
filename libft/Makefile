@@ -6,7 +6,7 @@
 #    By: agoulas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 15:28:36 by agoulas           #+#    #+#              #
-#    Updated: 2018/11/05 17:04:08 by agoulas          ###   ########.fr        #
+#    Updated: 2018/12/17 19:49:13 by agoulas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ NAME = libft.a
 
 # ============================================================================ #
 CC = gcc
-CFLAGS = -Wextra -Wall -Werror
-DFLAGS = -Wextra -Wall -Werror-pedantic -ansi -g -ggdb
+CFLAGS = -Wextra -Wall -Werror -g -ggdb
+DFLAGS = -Wextra -Wall -Werror -pedantic -ansi -g -ggdb
 
 # ============================================================================ #
 
@@ -26,9 +26,13 @@ HDR = includes
 # ============================================================================ #
 
 DIR_S = srcs
+DIR_SP = srcs_p
 DIR_O = build
+SRCSP=$(addprefix $(DIR_SP)/, $(SRCP))
 SRCS=$(addprefix $(DIR_S)/, $(SRC))
 OBJS=$(addprefix $(DIR_O)/, $(SRC:.c=.o))
+OBJSP=$(addprefix $(DIR_O)/,$(SRCP:.c=.o))
+
 
 # ============================================================================ #
 
@@ -51,35 +55,16 @@ SRC = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c\
 		  ft_itoa_base.c ft_putwchar.c ft_strtolower.c ft_strtoupper.c\
 		  ft_strcpy_from_to.c ft_wclen.c ft_wcslen.c ft_wctomb.c ft_wcscmp.c\
 		  ft_strtolower_rea.c ft_strtoupper_rea.c ft_lst_del.c ft_lst_printf.c\
-		  ft_sqrt.c \
+		  ft_sqrt.c ft_copyuntil.c ft_strjoinch.c\
 		  get_next_line.c\
-		  ft_printf.c\
-		  ft_itoa_base_printf.c\
-		  ft_flags.c\
-		  ft_format.c\
-		  ft_parsing_f.c\
-		  ft_conv.c\
-		  ft_conv_aux.c\
-		  ft_mod.c\
-		  ft_flags_option.c\
-		  ft_union_di.c\
-		  ft_handle_di.c\
-		  ft_test_value_mod.c\
-		  ft_handle_c.c\
-		  ft_handle_lc.c\
-		  ft_union_uoxx.c\
-		  ft_return_sign_uoxx.c\
-		  ft_handle_uoxx.c\
-		  ft_handle_u.c\
-		  ft_handle_o.c\
-		  ft_handle_x.c\
-		  ft_handle_pourc.c\
-		  ft_handle_none.c\
-		  ft_unicode.c\
-		  ft_handle_p.c\
-		  ft_handle_s.c\
-		  ft_s_aux.c\
-		  ft_strwchar.c\
+
+SRCP = ft_printf.c ft_itoa_base_printf.c ft_flags.c  ft_format.c\
+		  ft_parsing_f.c ft_conv.c ft_conv_aux.c ft_mod.c  ft_flags_option.c\
+		  ft_union_di.c ft_handle_di.c  ft_test_value_mod.c \
+		  ft_handle_c.c ft_handle_lc.c\
+		  ft_union_uoxx.c ft_return_sign_uoxx.c ft_handle_uoxx.c ft_handle_u.c\
+		  ft_handle_o.c  ft_handle_x.c ft_handle_pourc.c ft_handle_none.c\
+		  ft_unicode.c ft_handle_p.c ft_handle_s.c ft_s_aux.c ft_strwchar.c\
 		  ft_buffer.c\
 
 
@@ -88,8 +73,9 @@ SRC = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c\
 
 all: $(NAME)
 
-$(NAME): $(DIR_O) $(OBJS) $(HDR)
-	@ar rc $(NAME) $(OBJS)
+$(NAME): $(DIR_O) $(OBJS) $(OBJSP) $(HDR)
+	@chmod 700 $(OBJS)
+	@ar rc $(NAME) $(OBJS) $(OBJSP)
 	@ranlib $(NAME)
 	@echo "[$(PURPLE)Make $(NAME) done$(RESET)]"
 
@@ -99,17 +85,16 @@ $(DIR_O):
 
 $(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c $(HDR)
 	@$(CC) $(CFLAGS) -c $< -o $@ $(CPPFLAGS)
-
+$(OBJSP): $(DIR_O)/%.o: $(DIR_SP)/%.c $(HDR)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(CPPFLAGS)
 # ============================================================================ #
 #
 clean:
-	@rm -f $(OBJS)
+	@rm -Rf $(DIR_O)
 	@echo "libft clean"
 
 fclean: clean
 	@rm -f $(NAME)
-	@rm -Rf $(OBJS)
-	@rm -Rf $(OBJ)
 	@echo "libft fclean"
 
 re: fclean all
@@ -117,11 +102,3 @@ re: fclean all
 
 # ============================================================================ #
 
-norme:
-	norminette $(SRC) $(HDR)
-
-debug :
-	CFLAGS += $(DFLAGS)
-	re
-
-# ============================================================================ #

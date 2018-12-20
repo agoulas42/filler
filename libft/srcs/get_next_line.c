@@ -6,15 +6,15 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 13:27:51 by agoulas           #+#    #+#             */
-/*   Updated: 2018/08/16 15:50:08 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/18 18:43:57 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/get_next_line.h"
 
-static int		ret_strlen(char *s)
+static int  ret_strlen(char *s)
 {
-	int		pos_ret;
+	int  pos_ret;
 
 	pos_ret = 0;
 	if (s == NULL || s[0] == '\0')
@@ -28,9 +28,9 @@ static int		ret_strlen(char *s)
 	return (-1);
 }
 
-static t_list	*init_get(t_list **lst, int fd)
+static t_list *init_get(t_list **lst, int fd)
 {
-	t_list	*tmp;
+	t_list *tmp;
 
 	tmp = *lst;
 	while (tmp && tmp->content)
@@ -39,12 +39,13 @@ static t_list	*init_get(t_list **lst, int fd)
 			return (tmp);
 		tmp = tmp->next;
 	}
-	ft_lstadd(lst, ft_lstnew("", (size_t)fd));
+	ft_lstadd(lst, ft_lstnew("", 1));
+	(*lst)->content_size = (size_t)fd;
 	tmp = *lst;
 	return (tmp);
 }
 
-static int		get_str(int fd, char **line, char *tmp, t_list **lst)
+static int	get_str(int fd, char **line, char *tmp, t_list **lst)
 {
 	int		ind;
 	char	*str;
@@ -54,7 +55,8 @@ static int		get_str(int fd, char **line, char *tmp, t_list **lst)
 	if ((ind = ret_strlen(tmp)) != -1)
 	{
 		str = ft_strsub(tmp, (ind + 1), (ft_strlen(tmp) - (ind + 1)));
-		ft_lstadd(lst, ft_lstnew(str, (size_t)fd));
+		ft_lstadd(lst, ft_lstnew(str,sizeof(char)*ft_strlen(str)));
+		(*lst)->content_size = (size_t)fd;
 		*line = ft_strsub(tmp, 0, ind);
 		free(str);
 	}
@@ -65,7 +67,7 @@ static int		get_str(int fd, char **line, char *tmp, t_list **lst)
 	return (1);
 }
 
-static int		test_content(const int fd, char **tmp)
+static int	test_content(const int fd, char **tmp)
 {
 	char	buf[BUFF_SIZE + 1];
 	t_list	*l_buf;
@@ -74,11 +76,11 @@ static int		test_content(const int fd, char **tmp)
 
 	size = 0;
 	l_buf = ft_lstnew(NULL, fd);
-	ft_bzero(buf, BUFF_SIZE + 1);
+	ft_bzero(buf, BUFF_SIZE);
 	while ((ret_strlen(buf) == -1) && (n = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[n] = '\0';
-		ft_lstadd_last(&l_buf, ft_lstnew(buf, n));
+		ft_lstadd_last(&l_buf, ft_lstnew((char*)buf, sizeof(char) * n));
 		size = size + n;
 	}
 	if ((*tmp = ft_realloc(*tmp, (size))) == NULL)
@@ -91,7 +93,7 @@ static int		test_content(const int fd, char **tmp)
 	return (n);
 }
 
-int				get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
 	static t_list	*lst = NULL;
 	t_list			*tmp;
@@ -103,7 +105,7 @@ int				get_next_line(const int fd, char **line)
 	n = 0;
 	str = NULL;
 	tmp = init_get(&lst, fd);
-	if (tmp->content != NULL)
+	if (tmp->content != NULL) 
 		str = ft_strdup(tmp->content);
 	lst = ft_lst_del_one(lst, tmp->content, fd);
 	if (ret_strlen(str) == -1)
@@ -117,3 +119,4 @@ int				get_next_line(const int fd, char **line)
 	free(str);
 	return (1);
 }
+

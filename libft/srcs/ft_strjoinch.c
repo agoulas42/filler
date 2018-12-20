@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_game.c                                          :+:      :+:    :+:   */
+/*   ft_strjoinch.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/07 09:53:16 by agoulas           #+#    #+#             */
-/*   Updated: 2018/11/06 11:31:03 by agoulas          ###   ########.fr       */
+/*   Created: 2018/12/17 13:21:57 by agoulas           #+#    #+#             */
+/*   Updated: 2018/12/17 13:22:27 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_filler.h"
+#include "../includes/libft.h"
 
-int		init_game(t_game **p)
+char	*ft_strjoinch(char const *s1, char c)
 {
-	if ((*p = (t_game*)malloc(sizeof(t_game))) == NULL)
-		return (0);
-	(*p)->one = NULL;
-	(*p)->two = NULL;
-	(*p)->fd = 0;
-	(*p)->x_final = -1;
-	(*p)->y_final = -1;
-	(*p)->mineh = -1;
-	(*p)->minew = -1;
-	(*p)->maxeh = -1;
-	(*p)->maxew = -1;
-	(*p)->test = open("test.txt",O_CREAT | O_TRUNC | O_RDWR);
-	return (1);
+	char	*new_str;
+	size_t	i;
+	size_t	s1_len;
+
+	if (!s1 || !c)
+		return (NULL);
+	s1_len = ft_strlen(s1);
+	new_str = ft_strnew(s1_len + 1);
+	if (!new_str)
+		return (NULL);
+	i = -1;
+	while (++i < s1_len)
+		*(new_str + i) = *(s1 + i);
+	*(new_str + i) = c;
+	return (new_str);
 }

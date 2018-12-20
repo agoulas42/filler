@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 11:32:36 by agoulas           #+#    #+#             */
-/*   Updated: 2018/01/12 17:03:43 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/18 18:34:51 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	*ft_memalloc(size_t size)
 	char *p;
 
 	p = NULL;
-	if (size)
+	if (size > 0)
 	{
-		p = (char *)malloc(sizeof(char) * (size));
+		p = (char *)malloc(sizeof(p) * (size) + 1);
 		if (!p)
 			return (NULL);
 		else

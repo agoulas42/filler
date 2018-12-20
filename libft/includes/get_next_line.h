@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 17:51:54 by agoulas           #+#    #+#             */
-/*   Updated: 2018/08/14 14:16:16 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/19 17:20:05 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/uio.h>
-# define BUFF_SIZE 4096
+# define BUFF_SIZE 100
 
 int		get_next_line(const int fd, char **line);
 

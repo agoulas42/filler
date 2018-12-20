@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 15:22:50 by agoulas           #+#    #+#             */
-/*   Updated: 2018/01/12 16:59:16 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/18 18:38:57 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 void	*ft_bzero(void *s, size_t n)
 {
-	unsigned char	*b;
-	size_t			i;
+	size_t	i;
 
-	b = (unsigned char*)s;
 	i = 0;
 	while (i < n)
 	{
-		b[i] = '\0';
+		((char *)s)[i] = 0;
 		i++;
 	}
 	return (s);
