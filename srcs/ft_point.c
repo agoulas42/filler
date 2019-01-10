@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 16:18:14 by agoulas           #+#    #+#             */
-/*   Updated: 2018/12/11 15:04:42 by agoulas          ###   ########.fr       */
+/*   Updated: 2019/01/10 17:55:22 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ t_point	*init_point(char c)
 
 void	filler_point(t_filler **p)
 {
-	(*p)->en = init_point((*p)->enemy);
-	(*p)->pl = init_point((*p)->myplayer);
+	if ((*p)->en == NULL)
+		(*p)->en = init_point((*p)->enemy);
+	if ((*p)->pl == NULL)
+		(*p)->pl = init_point((*p)->myplayer);
 	ft_find_heigth_c(*p, (*p)->en->c, &((*p)->en->x_min), &((*p)->en->x_max));
 	ft_find_heigth_c(*p, (*p)->pl->c, &((*p)->pl->x_min), &((*p)->pl->x_max));
 	ft_find_width_c(*p, (*p)->en->c, &((*p)->en->y_min), &((*p)->en->y_max));
@@ -39,8 +41,10 @@ void	filler_point(t_filler **p)
 void	free_point(t_point **p)
 {
 	if ((*p) != NULL)
+	{
 		free(*p);
-	(*p) = NULL;
+		(*p) = NULL;
+	}
 }
 
 void	ft_find_width_c(t_filler *p, char c, int *min, int *max)

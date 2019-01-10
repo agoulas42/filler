@@ -6,7 +6,7 @@
 #    By: agoulas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/18 17:44:35 by agoulas           #+#    #+#              #
-#    Updated: 2018/12/17 14:17:38 by agoulas          ###   ########.fr        #
+#    Updated: 2019/01/09 19:37:28 by agoulas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 .PHONY: all re fclean clean debug norme
@@ -16,7 +16,7 @@ NAME = agoulas.filler
 # ============================================================================ #
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 DFLAGS = -Wall -Werror -Wextra  -pedantic -g -ggdb -ansi -w
 
 # ============================================================================ #
@@ -48,7 +48,7 @@ OBJS_LIB=$(addprefix $(DIR_OL)/, $(SRC_LP:.c=.o))
 
 SRC = ft_algo.c ft_figure.c ft_figure2.c ft_filler.c\
 	ft_handle_fig.c ft_map.c ft_parsing_tool.c ft_player.c\
-	ft_point.c ft_pos_player.c main.c\
+	ft_point.c ft_pos_player.c main.c ft_algo2.c\
 
 SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_memccpy.c ft_memcmp.c ft_memdel.c ft_memset.c \
@@ -103,7 +103,7 @@ all :$(NAME)
 
 $(NAME) : $(DIR_O) $(OBJS) $(OBJS_LIB) $(INC) $(DIR_INC)
 	@make -C libft
-	@$(CC) $(DFLAGS) -o $@ $(OBJS) $(LIBFLAGS)
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFLAGS)
 	@cp $(NAME) ./resources/players
 	@echo "[$(PURPLE)Make $(NAME) done$(RESET)]"
 
@@ -113,10 +113,10 @@ $(DIR_O):
 	@mkdir build/
 
 $(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c $(INC)
-	@$(CC) $(DFLAGS) -c $< -o $@ $(CPPFLAGS)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(CPPFLAGS)
 
 $(OBJS_LIB): $(DIR_OL)/%.o: $(DIR_LS)/%.c $(DIR_LSP)/%.c $(DIR_INC)
-	@$(CC) $(DFLAGS) -c $< -o $@ $(CPPFLAGS)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(CPPFLAGS)
 
 # ============================================================================ #
 

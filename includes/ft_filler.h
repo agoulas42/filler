@@ -6,16 +6,17 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 18:02:51 by agoulas           #+#    #+#             */
-/*   Updated: 2018/12/19 18:56:06 by agoulas          ###   ########.fr       */
+/*   Updated: 2019/01/10 17:54:56 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __FT_FILLER_H
 # define __FT_FILLER_H
 
-#include "../libft/includes/libft.h"
-#include "../libft/includes/get_next_line.h"
-#include "../libft/includes/ft_printf.h"
+# include "../libft/includes/libft.h"
+# include "../libft/includes/get_next_line.h"
+# include "../libft/includes/ft_printf.h"
+# include <stdio.h>
 
 typedef struct	s_p
 {
@@ -28,21 +29,18 @@ typedef struct	s_p
 	char		c;
 }				t_point;
 
-typedef enum	s_dir
+typedef enum	e_dir
 {
-				UP_LEFT = 0,
-				DOWN_RIGTH = 1,
-				UP_RIGTH = 2,
-				DOWN_LEFT = 3,
-				NONE = 4,
-
-}				e_dir;
+	UP_LEFT = 0,
+	DOWN_RIGTH = 1,
+	UP_RIGTH = 2,
+	DOWN_LEFT = 3,
+}				t_dir;
 
 typedef struct	s_filler{
 
 	int			fd;
-	int			test;
-	e_dir		algo_nb;
+	t_dir		algo_nb;
 	char		myplayer;
 	char		enemy;
 	int			heigth;
@@ -64,9 +62,6 @@ typedef struct	s_filler{
 	int			j;
 }				t_filler;
 
-t_point			*init_point(char c);
-void			free_point(t_point **p);
-
 void			ft_find_width_c(t_filler *p, char c, int *min, int *max);
 void			ft_find_heigth_c(t_filler *p, char c, int *min, int *max);
 
@@ -75,6 +70,7 @@ int				ft_getplayer(t_filler **p, char **line);
 
 int				init_filler(t_filler **pi, char **line);
 void			free_filler(t_filler **p);
+void			final_free(t_filler **p);
 
 int				ft_get_header(t_filler **p, char **line);
 int				ft_find_carac(const char *hay, char c);
@@ -101,7 +97,9 @@ t_point			*init_point(char c);
 void			filler_point(t_filler **p);
 void			free_point(t_point **p);
 
-void			find_pos_enemy(t_filler **p);
+void			ft_test_algo(t_filler **p);
+void			ft_test_algo2(t_filler **p);
 int				ft_algo(t_filler **pv);
+int				ft_algo2(t_filler **pv);
 int				re_test_algo(t_filler **pv);
 #endif

@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/07 09:53:16 by agoulas           #+#    #+#             */
-/*   Updated: 2018/12/20 12:57:11 by agoulas          ###   ########.fr       */
+/*   Updated: 2019/01/10 15:48:47 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		init_filler(t_filler **p, char **line)
 	(*p)->map = NULL;
 	(*p)->fig = NULL;
 	(*p)->fd = 0;
+	(*p)->algo_nb = 0;
 	(*p)->heigth = -100;
 	(*p)->width = -100;
 	(*p)->fig_width = -100;
@@ -30,7 +31,6 @@ int		init_filler(t_filler **p, char **line)
 	(*p)->end_filler = 1;
 	(*p)->pl = NULL;
 	(*p)->en = NULL;
-	(*p)->test = open("test.txt", O_CREAT | O_TRUNC | O_RDWR);
 	if (ft_get_header(p, line) == 0 || ft_getplayer(p, line) == 0)
 		return (0);
 	return (1);
@@ -42,4 +42,11 @@ void	free_filler(t_filler **p)
 	free_fig(p);
 	free_point(&(*p)->en);
 	free_point(&(*p)->pl);
+}
+
+void	final_free(t_filler **p)
+{
+	free_filler(p);
+	free(*p);
+	p = NULL;
 }

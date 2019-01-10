@@ -6,16 +6,15 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/07 09:59:35 by agoulas           #+#    #+#             */
-/*   Updated: 2018/12/19 18:55:50 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/24 19:20:09 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_filler.h"
 
-
-void ft_free_tab(char ***tab)
+void	ft_free_tab(char ***tab)
 {
-	 int i;
+	int i;
 
 	i = 0;
 	if (*tab == NULL)
@@ -26,17 +25,18 @@ void ft_free_tab(char ***tab)
 		(*tab)[i] = NULL;
 		i++;
 	}
+	free(*tab);
+	*tab = NULL;
 }
 
 int		ft_get_header(t_filler **p, char **line)
 {
 	int res;
 
+	res = 0;
 	while ((res = get_next_line((*p)->fd, line)) > -1)
 	{
-		if (res == 0)
-			return (0);
-		else if (ft_strncmp(*line, "#", 1) != 0)
+		if (ft_strncmp(*line, "#", 1) != 0)
 			break ;
 		else
 			ft_strdel(line);

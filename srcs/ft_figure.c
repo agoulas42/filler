@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/08 11:28:59 by agoulas           #+#    #+#             */
-/*   Updated: 2018/12/19 17:31:49 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/12/24 19:21:04 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ int		init_fig(t_filler **p, int x, int y)
 		return (0);
 	if (((*p)->fig = (char **)malloc(sizeof(char*) * (x + 1))) == NULL)
 		return (0);
-	while (i < x)
-	{
-		if (((*p)->fig[i] = (char*)ft_memalloc(y + 1)) == NULL)
-			return (0);
-		i++;
-	}
-	(*p)->fig[i] = NULL;
 	(*p)->fig_heigth = x;
 	(*p)->fig_width = y;
 	return (1);
@@ -47,7 +40,8 @@ int		gnl_fig(t_filler **p, char **line)
 	{
 		if ((res = get_next_line((*p)->fd, line)) < 0)
 			return (0);
-		(*p)->fig[u] = *line;
+		(*p)->fig[u] = ft_strdup(*line);
+		ft_strdel(line);
 		u++;
 	}
 	(*p)->fig[u] = NULL;
@@ -58,24 +52,16 @@ int		gnl_fig(t_filler **p, char **line)
 int		get_fig(t_filler **p, char **line)
 {
 	char	**tab;
-	int		i;
 
-	free_fig(p);
 	tab = NULL;
+	free_fig(p);
 	if ((tab = ft_strsplit(*line, ' ')) == NULL)
 		return (0);
 	ft_strdel(line);
 	if (init_fig(p, ft_atoi(tab[1]), ft_atoi(tab[2])) == 0
 			|| gnl_fig(p, line) == 0)
 		return (0);
-	i = 0;
-	while (tab[i] != NULL)
-	{
-		free(tab[i]);
-		tab[i] = NULL;
-		i++;
-	}
-	free(tab);
+	ft_free_tab(&tab);
 	tab = NULL;
 	return (1);
 }
